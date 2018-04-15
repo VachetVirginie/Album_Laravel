@@ -13,9 +13,11 @@ let mix = require('laravel-mix');
 
 mix.styles([
         'resources/assets/css/bootstrap.css',
-        'resources/assets/css/app.css'
+        'resources/assets/css/app.css',
+        'resources/assets/css/sweetalert2.css'
     ], 'public/css/app.css')
     .scripts([
         'resources/assets/js/jquery-3.3.1.js',
-        'resources/assets/js/bootstrap.bundle.js'
+        'resources/assets/js/bootstrap.bundle.js',
+        'resources/assets/js/sweetalert2.js'
     ], 'public/js/app.js');

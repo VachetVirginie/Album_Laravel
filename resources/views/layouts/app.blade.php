@@ -27,6 +27,9 @@
                         <a class="dropdown-item" href="{{ route('category.create') }}">
                             <i class="fas fa-plus fa-lg"></i> @lang('Ajouter une catégorie')
                         </a>
+                        <a class="dropdown-item" href="{{ route('category.index') }}">
+            <i class="fas fa-wrench fa-lg"></i> @lang('Gérer les catégories')
+        </a>
                     </div>
                 </li>
                 @endadmin
