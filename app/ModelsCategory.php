@@ -16,6 +16,9 @@ class Category extends Model
     protected $fillable = [
         'name', 'slug',
     ];
+    protected $dispatchesEvents = [
+        'saving' => CategorySaving::class,
+    ];
 
     /**
      * Get the images.

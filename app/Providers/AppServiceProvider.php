@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Providers;
-
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -12,9 +12,11 @@ class AppServiceProvider extends ServiceProvider
      * @return void
      */
     public function boot()
-    {
-        //
-    }
+{
+    Blade::if('admin', function () {
+        return auth()->check() && auth()->user()->role === 'admin';
+    });
+}
 
     /**
      * Register any application services.
