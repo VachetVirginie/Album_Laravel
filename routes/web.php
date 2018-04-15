@@ -17,9 +17,17 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 Auth::routes();
+
 Route::get('/', 'HomeController@index')->name('home');
+
 Route::middleware('admin')->group(function () {
     Route::resource ('category', 'CategoryController', [
         'except' => 'show'
+    ]);
+});
+
+Route::middleware('auth')->group(function () {
+    Route::resource('image', 'ImageController', [
+        'only' => ['create', 'store', 'destroy']
     ]);
 });
