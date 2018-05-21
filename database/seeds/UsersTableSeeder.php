@@ -6,15 +6,17 @@
         public function run()
         {
             User::create([
-                'name' => 'Durand',
-                'email' => 'durand@chezlui.fr',
+                'name' => 'Vivi',
+                'email' => 'vivi@gmail.com',
                 'role' => 'admin',
-                'password' => bcrypt('admin'),
+                'password' => bcrypt('azerty'),
+                'settings' => '{"pagination": 8}',
             ]);
             User::create([
-                'name' => 'Dupont',
-                'email' => 'dupont@chezlui.fr',
-                'password' => bcrypt('user'),
+                'name' => 'Soso',
+                'email' => 'soso@gmail.com',
+                'password' => bcrypt('azerty'),
+                'settings' => '{"pagination": 8}',
             ]);
         }
     }

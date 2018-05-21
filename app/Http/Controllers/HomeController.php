@@ -1,14 +1,19 @@
 <?php
-    namespace App\Http\Controllers;
-    class HomeController extends Controller
+
+namespace App\Http\Controllers;
+use App\Models\Image;
+
+class HomeController extends Controller
+{
+    /**
+     * Show the application dashboard.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
     {
-        /**
-         * Show the application dashboard.
-         *
-         * @return \Illuminate\Http\Response
-         */
-        public function index()
-        {
-            return view('home');
-        }
+        $images = Image::latestWithUser()->paginate(config('app.pagination'));
+
+        return view('home', compact('images'));
     }
+}

@@ -3,13 +3,15 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\ { User, Image, Category };
 use App\Repositories\ImageRepository;
-
+use Validator;
 
 
 class ImageController extends Controller
 {
     protected $repository;
+
     /**
      * Create a new ImageController instance.
      *
@@ -18,10 +20,6 @@ class ImageController extends Controller
     public function __construct(ImageRepository $repository)
     {
         $this->repository = $repository;
-    }
-    public function index()
-    {
-        //
     }
 
     /**
@@ -32,6 +30,7 @@ class ImageController extends Controller
     public function create()
     {
         return view('images.create');
+        
     }
 
     /**
@@ -40,6 +39,13 @@ class ImageController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+    public function update(Request $request, Image $image)
+    {
+        $image->category_id = $request->category_id;
+        $image->save();
+        return redirect()->back();
+    }
+
     public function store(Request $request)
     {
         $request->validate([
@@ -47,52 +53,72 @@ class ImageController extends Controller
             'category_id' => 'required|exists:categories,id',
             'description' => 'nullable|string|max:255',
         ]);
+
         $this->repository->store($request);
+
+        $rules = [
+            'address'=>'required'
+        ];
+    
+        $validation = Validator::make($request->all(), $rules);
+        if($validation->fails()){
+            return back()->withErrors($validation)->withInput();
+        }
+    
+        $param = array('address'=>$request->get('address'));
+        $response = \Geocoder::geocode('json', $param);
+        $location = json_decode($response);
+    
+        //dd($location);
+    
+        if($location->status == 'OK'){
+            $name = $location->results[0]->address_components[0]->long_name;
+            $address = $location->results[0]->formatted_address;
+            $lat = $location->results[0]->geometry->location->lat;
+            $lng = $location->results[0]->geometry->location->lng;
+    
+            if($lat && $lng){
+                $point = new \App\Point;
+                $point->name = $name;
+                $point->address = $address;
+                $point->lat = $lat;
+                $point->lng = $lng;
+                $point->user_id = \Auth::user()->id;
+    
+                if($point->save()){
+                    return back()->withSuccess('Adresse ajoutée');
+                }
+            }
+        }
+        else{
+            dd($location);
+        }
+
         return back()->with('ok', __("L'image a bien été enregistrée"));
     }
 
     /**
-     * Display the specified resource.
+     * Display a listing of the images for the specified category.
      *
-     * @param  int  $id
+     * @param  string  $slug
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
-        //
-    }
+    public function category($slug)
+{
+    $category = Category::whereSlug($slug)->firstorFail();
+    $images = $this->repository->getImagesForCategory($slug);
+    return view('home', compact('category', 'images'));
+}
+public function user(User $user)
+{
+    $images = $this->repository->getImagesForUser($user->id);
+    return view('home', compact('user', 'images'));
+}
+public function destroy(Image $image)
+{
+    $this->authorize('delete', $image);
+    $image->delete();
+    return back();
+}
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
 }

@@ -33,4 +33,6 @@ class Image extends Model
     {
         return $query->with('user')->latest();
     }
+   
+
 }

@@ -159,6 +159,7 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        Alexpechkarev\GoogleGeocoder\GoogleGeocoderServiceProvider::class,
 
     ],
 
@@ -210,5 +211,5 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
 
     ],
-
+    'pagination' => 8,
 ];

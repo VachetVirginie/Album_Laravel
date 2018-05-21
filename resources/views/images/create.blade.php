@@ -30,6 +30,15 @@
                         <option value="{{ $category->id }}">{{ $category->name }}</option>
                     @endforeach
                 </select>
+                <div class="form-group">
+        <label for="address">Entrez la rue où se trouve l'oeuvre</label>
+        <input type="text" class="form-control" name="address" id="address" placeholder="Adresse">
+        @if($errors->has('address'))
+        <span class="label label-danger">{{$errors->first('address')}}</span>
+        @endif
+    </div>
+
+    
             </div>
 
             @include('partials.form-group', [

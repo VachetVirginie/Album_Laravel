@@ -6,19 +6,19 @@
         public function run()
         {
             Category::create([
-                'name' => 'Paysages',
+                'name' => 'Graffitis',
             ]);
             Category::create([
-                'name' => 'Maisons',
+                'name' => 'Tags',
             ]);
             Category::create([
-                'name' => 'Personnages',
+                'name' => 'Fresques',
             ]);
             Category::create([
-                'name' => 'Animaux',
+                'name' => 'Stickers',
             ]);
             Category::create([
-                'name' => 'Végétation',
+                'name' => 'Stencils',
             ]);
         }
     }

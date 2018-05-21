@@ -15,7 +15,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password', 'settings',
     ];
 
     /**
@@ -31,4 +31,9 @@ public function images()
 {
     return $this->hasMany(Image::class);
 }
+public function points()
+{
+    return $this->hasMany(Points::class);
+}
+
 }
